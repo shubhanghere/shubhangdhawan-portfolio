@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import AIOrb from "./AIOrb";
 import AIRobotOrbit from "./AIRobotOrbit";
 import ConnectModal from "./ConnectModal";
-import { ArrowUpRight, ExternalLink, Mail } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Mail, Radio } from "lucide-react";
 import { SiGithub, SiMedium, SiGooglescholar } from "react-icons/si";
 import { FaLinkedinIn } from "react-icons/fa6";
 
@@ -374,7 +374,7 @@ export default function Portfolio() {
                           <ExternalLink aria-hidden="true" size={13} />
                         </a>
                         <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" onClick={() => setProjectLinksOpen(false)}>
-                          <span className="live-dot" />
+                          <Radio aria-hidden="true" size={15} className="live-icon" />
                           <span>Live Project</span>
                           <ExternalLink aria-hidden="true" size={13} />
                         </a>
