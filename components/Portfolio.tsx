@@ -35,8 +35,8 @@ const projects = [
   },
   {
     number: "05", title: "Smart City Traffic AI", type: "SMART CITY / AI TRAFFIC INTELLIGENCE",
-    description: "An interactive smart-city traffic simulation featuring a 3D digital twin, congestion monitoring, scenario-based forecasting, simulated anomaly detection, adaptive signal strategies, and real-time dashboard analytics.",
-    tags: ["React", "Three.js", "JavaScript", "Vite", "AI / ML Simulation"],
+    description: "An interactive smart-city traffic intelligence platform featuring a 3D digital twin, congestion monitoring, scenario-based traffic forecasting, incident simulation, adaptive signal strategies, and interactive analytics.",
+    tags: ["React", "Three.js", "JavaScript", "Vite", "Traffic Simulation"],
     sourceUrl: "https://github.com/shubhanghere/smart-city-traffic-ai-ml-prediction",
     demoUrl: "https://smart-city-traffic-ai-ml-prediction.pages.dev/",
   },
@@ -293,7 +293,15 @@ export default function Portfolio() {
               <article className="project-card" key={project.number}>
                 <div className="project-top">
                   <span>{project.number}</span>
-                  <ArrowUpRight aria-hidden="true" size={18} />
+                  <a
+                    className="project-nav-link"
+                    href={project.demoUrl ?? project.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Open ${project.title} ${project.demoUrl ? "live demo" : "source code"}`}
+                  >
+                    <ArrowUpRight aria-hidden="true" size={17} />
+                  </a>
                 </div>
 
                 <div className="project-type">
