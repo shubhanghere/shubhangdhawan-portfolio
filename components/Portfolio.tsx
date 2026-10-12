@@ -4,7 +4,7 @@ import { useState } from "react";
 import AIOrb from "./AIOrb";
 import AIRobotOrbit from "./AIRobotOrbit";
 import ConnectModal from "./ConnectModal";
-import { Mail } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Mail } from "lucide-react";
 import { SiGithub, SiMedium, SiGooglescholar } from "react-icons/si";
 import { FaLinkedinIn } from "react-icons/fa6";
 
@@ -13,32 +13,32 @@ const projects = [
     number: "01", title: "PowerMind AI", type: "Intelligent Q&A / RAG",
     description: "Intelligent Q&A on the book The 48 Laws of Power.",
     tags: ["GenAI", "RAG", "LLMs"],
-    url: "https://github.com/shubhanghere/CogitoLibrum-Intelligent-Analysis-and-Retrieval-System-for-48-Laws-of-Power",
+    sourceUrl: "https://github.com/shubhanghere/CogitoLibrum-Intelligent-Analysis-and-Retrieval-System-for-48-Laws-of-Power",
   },
   {
     number: "02", title: "MarketIQ", type: "AI Agent / Marketing Insights",
     description: "AI agent for marketing data insights.",
     tags: ["AI Agents", "LLMs", "Marketing Data"],
-    url: "https://github.com/shubhanghere/ad-analyzer-agent",
+    sourceUrl: "https://github.com/shubhanghere/ad-analyzer-agent",
   },
   {
     number: "03", title: "Healthcare Chatbot", type: "Healthcare NLP",
     description: "Conversational healthcare assistant that answers natural-language questions using medical knowledge resources.",
     tags: ["NLP", "Healthcare", "Conversational AI"],
-    url: "https://github.com/shubhanghere/Ai-Healthcare-Chatbot-master",
+    sourceUrl: "https://github.com/shubhanghere/Ai-Healthcare-Chatbot-master",
   },
   {
     number: "04", title: "NewsFeedHarmony", type: "News Feed Intelligence",
     description: "RSS news workflow that organizes articles with sentiment and keyword analysis for easier discovery.",
     tags: ["Python", "RSS", "Sentiment Analysis"],
-    url: "https://github.com/shubhanghere/NewsFeedHarmony",
+    sourceUrl: "https://github.com/shubhanghere/NewsFeedHarmony",
   },
   {
     number: "05", title: "Smart City Traffic AI", type: "SMART CITY / AI TRAFFIC INTELLIGENCE",
     description: "An interactive smart-city traffic simulation featuring a 3D digital twin, congestion monitoring, scenario-based forecasting, simulated anomaly detection, adaptive signal strategies, and real-time dashboard analytics.",
     tags: ["React", "Three.js", "JavaScript", "Vite", "AI / ML Simulation"],
-    url: "https://github.com/shubhanghere/smart-city-traffic-ai-ml-prediction",
-    demo: "https://smart-city-traffic-ai-ml-prediction.pages.dev/",
+    sourceUrl: "https://github.com/shubhanghere/smart-city-traffic-ai-ml-prediction",
+    demoUrl: "https://smart-city-traffic-ai-ml-prediction.pages.dev/",
   },
 ];
 const experiences = [
@@ -290,27 +290,30 @@ export default function Portfolio() {
 
           <div className="projects-grid">
             {projects.map((project) => (
-              project.demo ? (
-                <article className="project-card" key={project.number}>
-                  <div className="project-top"><span>{project.number}</span><span>?</span></div>
-                  <div className="project-type">{project.type}</div>
-                  <h3>{project.title}</h3>
-                  <p>{project.description}</p>
-                  <div className="tag-row">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-                  <div className="project-links">
-                    <a href={project.url} target="_blank" rel="noreferrer">Source Code <span>?</span></a>
-                    <a href={project.demo} target="_blank" rel="noreferrer">Live Demo <span>?</span></a>
-                  </div>
-                </article>
-              ) : (
-                <a className="project-card" key={project.number} href={project.url} target="_blank" rel="noreferrer">
-                  <div className="project-top"><span>{project.number}</span><span>?</span></div>
-                  <div className="project-type">{project.type}</div>
-                  <h3>{project.title}</h3>
-                  <p>{project.description}</p>
-                  <div className="tag-row">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-                </a>
-              )
+              <article className="project-card" key={project.number}>
+                <div className="project-top">
+                  <span>{project.number}</span>
+                  <ArrowUpRight aria-hidden="true" size={18} />
+                </div>
+
+                <div className="project-type">
+                  {project.type}
+                </div>
+
+                <h3>{project.title}</h3>
+
+                <p>{project.description}</p>
+
+                <div className="tag-row">
+                  {project.tags.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+                <div className="project-actions">
+                  {project.sourceUrl && <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer"><SiGithub aria-hidden="true" size={15} />Source Code<ExternalLink aria-hidden="true" size={13} /></a>}
+                  {project.demoUrl && <a href={project.demoUrl} target="_blank" rel="noopener noreferrer"><span className="live-dot" />Live Demo<ExternalLink aria-hidden="true" size={13} /></a>}
+                </div>
+              </article>
             ))}
           </div>
         </section>
