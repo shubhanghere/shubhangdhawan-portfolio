@@ -33,6 +33,13 @@ const projects = [
     tags: ["Python", "RSS", "Sentiment Analysis"],
     url: "https://github.com/shubhanghere/NewsFeedHarmony",
   },
+  {
+    number: "05", title: "Smart City Traffic AI", type: "SMART CITY / AI TRAFFIC INTELLIGENCE",
+    description: "An interactive smart-city traffic simulation featuring a 3D digital twin, congestion monitoring, scenario-based forecasting, simulated anomaly detection, adaptive signal strategies, and real-time dashboard analytics.",
+    tags: ["React", "Three.js", "JavaScript", "Vite", "AI / ML Simulation"],
+    url: "https://github.com/shubhanghere/smart-city-traffic-ai-ml-prediction",
+    demo: "https://smart-city-traffic-ai-ml-prediction.pages.dev/",
+  },
 ];
 const experiences = [
   {
@@ -283,7 +290,7 @@ export default function Portfolio() {
 
           <div className="projects-grid">
             {projects.map((project) => (
-              <a className="project-card" key={project.number} href={project.url} target="_blank" rel="noreferrer">
+              <article className="project-card" key={project.number}>
                 <div className="project-top">
                   <span>{project.number}</span>
                   <span>↗</span>
@@ -302,7 +309,8 @@ export default function Portfolio() {
                     <span key={tag}>{tag}</span>
                   ))}
                 </div>
-              </a>
+                <div className="project-links"><a href={project.url} target="_blank" rel="noreferrer">Source Code <span>↗</span></a>{project.demo && <a href={project.demo} target="_blank" rel="noreferrer">Live Demo <span>↗</span></a>}</div>
+              </article>
             ))}
           </div>
         </section>
