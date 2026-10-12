@@ -290,27 +290,27 @@ export default function Portfolio() {
 
           <div className="projects-grid">
             {projects.map((project) => (
-              <article className="project-card" key={project.number}>
-                <div className="project-top">
-                  <span>{project.number}</span>
-                  <span>↗</span>
-                </div>
-
-                <div className="project-type">
-                  {project.type}
-                </div>
-
-                <h3>{project.title}</h3>
-
-                <p>{project.description}</p>
-
-                <div className="tag-row">
-                  {project.tags.map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
-                </div>
-                <div className="project-links"><a href={project.url} target="_blank" rel="noreferrer">Source Code <span>↗</span></a>{project.demo && <a href={project.demo} target="_blank" rel="noreferrer">Live Demo <span>↗</span></a>}</div>
-              </article>
+              project.demo ? (
+                <article className="project-card" key={project.number}>
+                  <div className="project-top"><span>{project.number}</span><span>?</span></div>
+                  <div className="project-type">{project.type}</div>
+                  <h3>{project.title}</h3>
+                  <p>{project.description}</p>
+                  <div className="tag-row">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                  <div className="project-links">
+                    <a href={project.url} target="_blank" rel="noreferrer">Source Code <span>?</span></a>
+                    <a href={project.demo} target="_blank" rel="noreferrer">Live Demo <span>?</span></a>
+                  </div>
+                </article>
+              ) : (
+                <a className="project-card" key={project.number} href={project.url} target="_blank" rel="noreferrer">
+                  <div className="project-top"><span>{project.number}</span><span>?</span></div>
+                  <div className="project-type">{project.type}</div>
+                  <h3>{project.title}</h3>
+                  <p>{project.description}</p>
+                  <div className="tag-row">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                </a>
+              )
             ))}
           </div>
         </section>
