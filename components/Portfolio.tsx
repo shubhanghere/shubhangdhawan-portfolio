@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AIOrb from "./AIOrb";
 import AIRobotOrbit from "./AIRobotOrbit";
 import ConnectModal from "./ConnectModal";
@@ -88,6 +88,35 @@ const skills = [
 ];
 export default function Portfolio() {
   const [connectOpen, setConnectOpen] = useState(false);
+  const [projectLinksOpen, setProjectLinksOpen] = useState(false);
+  const [projectLinksPinned, setProjectLinksPinned] = useState(false);
+  const projectLinksRef = useRef<HTMLDivElement>(null);
+  const projectLinksTriggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!projectLinksOpen) return;
+
+    const closeOnOutsidePress = (event: PointerEvent) => {
+      if (event.target instanceof Node && !projectLinksRef.current?.contains(event.target)) {
+        setProjectLinksOpen(false);
+        setProjectLinksPinned(false);
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setProjectLinksOpen(false);
+        setProjectLinksPinned(false);
+        projectLinksTriggerRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("pointerdown", closeOnOutsidePress);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePress);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [projectLinksOpen]);
 
   return (
     <>
@@ -290,18 +319,78 @@ export default function Portfolio() {
 
           <div className="projects-grid">
             {projects.map((project) => (
-              <article className="project-card" key={project.number}>
+              <article className={`project-card${project.demoUrl && projectLinksOpen ? " is-project-links-open" : ""}`} key={project.number}>
                 <div className="project-top">
                   <span>{project.number}</span>
-                  <a
-                    className="project-nav-link"
-                    href={project.demoUrl ?? project.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Open ${project.title} ${project.demoUrl ? "live demo" : "source code"}`}
-                  >
-                    <ArrowUpRight aria-hidden="true" size={17} />
-                  </a>
+                  {project.demoUrl ? (
+                    <div
+                      className="project-link-menu"
+                      ref={projectLinksRef}
+                      onPointerEnter={(event) => {
+                        if (event.pointerType === "mouse") {
+                          setProjectLinksOpen(true);
+                          setProjectLinksPinned(false);
+                        }
+                      }}
+                      onPointerLeave={(event) => {
+                        if (event.pointerType === "mouse" && !projectLinksPinned && !projectLinksRef.current?.contains(document.activeElement)) {
+                          setProjectLinksOpen(false);
+                        }
+                      }}
+                      onBlurCapture={(event) => {
+                        if (!(event.relatedTarget instanceof Node) || !projectLinksRef.current?.contains(event.relatedTarget)) {
+                          setProjectLinksOpen(false);
+                          setProjectLinksPinned(false);
+                        }
+                      }}
+                    >
+                      <button
+                        className="project-nav-link"
+                        type="button"
+                        ref={projectLinksTriggerRef}
+                        aria-label={`Show project links for ${project.title}`}
+                        aria-expanded={projectLinksOpen}
+                        aria-controls={`project-links-${project.number}`}
+                        onClick={() => {
+                          const nextOpen = !projectLinksOpen || !projectLinksPinned;
+                          setProjectLinksOpen(nextOpen);
+                          setProjectLinksPinned(nextOpen);
+                        }}
+                      >
+                        <ArrowUpRight aria-hidden="true" size={17} />
+                      </button>
+                      <div
+                        className={`project-link-popover${projectLinksOpen ? " is-open" : ""}`}
+                        id={`project-links-${project.number}`}
+                        role="group"
+                        aria-labelledby={`project-links-heading-${project.number}`}
+                        aria-hidden={!projectLinksOpen}
+                        inert={!projectLinksOpen}
+                      >
+                        <strong id={`project-links-heading-${project.number}`}>Explore Project</strong>
+                        <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer" onClick={() => setProjectLinksOpen(false)}>
+                          <SiGithub aria-hidden="true" size={16} />
+                          <span>Source Code</span>
+                          <ExternalLink aria-hidden="true" size={13} />
+                        </a>
+                        <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" onClick={() => setProjectLinksOpen(false)}>
+                          <span className="live-dot" />
+                          <span>Live Project</span>
+                          <ExternalLink aria-hidden="true" size={13} />
+                        </a>
+                      </div>
+                    </div>
+                  ) : (
+                    <a
+                      className="project-nav-link"
+                      href={project.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Open ${project.title} source code`}
+                    >
+                      <ArrowUpRight aria-hidden="true" size={17} />
+                    </a>
+                  )}
                 </div>
 
                 <div className="project-type">
@@ -317,10 +406,11 @@ export default function Portfolio() {
                     <span key={tag}>{tag}</span>
                   ))}
                 </div>
-                <div className="project-actions">
-                  {project.sourceUrl && <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer"><SiGithub aria-hidden="true" size={15} />Source Code<ExternalLink aria-hidden="true" size={13} /></a>}
-                  {project.demoUrl && <a href={project.demoUrl} target="_blank" rel="noopener noreferrer"><span className="live-dot" />Live Demo<ExternalLink aria-hidden="true" size={13} /></a>}
-                </div>
+                {!project.demoUrl && project.sourceUrl && (
+                  <div className="project-actions">
+                    <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer"><SiGithub aria-hidden="true" size={15} />Source Code<ExternalLink aria-hidden="true" size={13} /></a>
+                  </div>
+                )}
               </article>
             ))}
           </div>

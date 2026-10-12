@@ -2120,9 +2120,21 @@ button {
 }
 .project-actions a:hover { color:#fff; border-color:#48c9ff; background:#0d2a48; transform:translateY(-1px); }
 .project-actions a:focus-visible { outline:2px solid #67d7ff; outline-offset:3px; }
-.project-nav-link { display:grid; place-items:center; width:32px; height:32px; margin:-7px -7px 0 0; border:1px solid transparent; border-radius:7px; color:#8193aa; transition:color .2s,background .2s,border-color .2s; }
+.project-nav-link { display:grid; place-items:center; width:32px; height:32px; margin:-7px -7px 0 0; padding:0; border:1px solid transparent; border-radius:7px; background:transparent; color:#8193aa; cursor:pointer; transition:color .2s,background .2s,border-color .2s; }
 .project-nav-link:hover { color:#62d1ff; background:#10273a; border-color:#42bfff55; }
 .project-nav-link:focus-visible { color:#8be0ff; outline:2px solid #67d7ff; outline-offset:2px; }
+.project-link-menu { position:relative; z-index:2; }
+.project-link-popover { position:absolute; z-index:24; top:calc(100% + 7px); right:0; display:grid; gap:7px; width:min(236px,calc(100vw - 64px)); padding:12px; border:1px solid #42bfff66; border-radius:10px; background:linear-gradient(145deg,#0d1b30,#07101f); box-shadow:0 14px 36px #0009,0 0 22px #1278bb1c; opacity:0; visibility:hidden; pointer-events:none; transform:translateY(-5px); transition:opacity .18s ease,transform .18s ease,visibility .18s; }
+.project-link-popover.is-open { opacity:1; visibility:visible; pointer-events:auto; transform:translateY(0); }
+.project-link-popover > strong { margin:0 2px 3px; color:#e4f3ff; font-size:12px; font-weight:650; }
+.project-link-popover > a { display:flex; min-height:38px; align-items:center; gap:9px; padding:0 9px; border:1px solid #35516d88; border-radius:7px; background:#0c1b2d; color:#c9e6fa; font-size:11px; font-weight:600; transition:color .18s,border-color .18s,background .18s; }
+.project-link-popover > a span:nth-child(2) { flex:1; }
+.project-link-popover > a:hover { border-color:#4dcaff; background:#102946; color:white; }
+.project-link-popover > a:focus-visible { outline:2px solid #67d7ff; outline-offset:2px; }
+.project-link-popover .live-dot { flex:none; }
+.project-card.is-project-links-open { z-index:12; }
+.project-card .project-type { transition:margin-top .2s ease; }
+.project-card.is-project-links-open .project-type { margin-top:185px; }
 .projects-grid article.project-card .project-actions { display:flex; flex-wrap:wrap; gap:12px; }
 .projects-grid article.project-card .project-actions > a {
   display:inline-flex; align-items:center; justify-content:center; min-height:42px; gap:8px;
