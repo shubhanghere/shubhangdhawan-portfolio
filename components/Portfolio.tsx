@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import AIOrb from "./AIOrb";
 import AIRobotOrbit from "./AIRobotOrbit";
 import ConnectModal from "./ConnectModal";
-import { ExternalLink, Link2, Mail, Radio } from "lucide-react";
+import { ExternalLink, Mail } from "lucide-react";
 import { SiGithub, SiMedium, SiGooglescholar } from "react-icons/si";
 import { FaLinkedinIn } from "react-icons/fa6";
 
@@ -13,32 +13,31 @@ const projects = [
     number: "01", title: "PowerMind AI", type: "Intelligent Q&A / RAG",
     description: "Intelligent Q&A on the book The 48 Laws of Power.",
     tags: ["GenAI", "RAG", "LLMs"],
-    sourceUrl: "https://github.com/shubhanghere/CogitoLibrum-Intelligent-Analysis-and-Retrieval-System-for-48-Laws-of-Power",
+    url: "https://github.com/shubhanghere/CogitoLibrum-Intelligent-Analysis-and-Retrieval-System-for-48-Laws-of-Power",
   },
   {
     number: "02", title: "MarketIQ", type: "AI Agent / Marketing Insights",
     description: "AI agent for marketing data insights.",
     tags: ["AI Agents", "LLMs", "Marketing Data"],
-    sourceUrl: "https://github.com/shubhanghere/ad-analyzer-agent",
+    url: "https://github.com/shubhanghere/ad-analyzer-agent",
   },
   {
     number: "03", title: "Healthcare Chatbot", type: "Healthcare NLP",
     description: "Conversational healthcare assistant that answers natural-language questions using medical knowledge resources.",
     tags: ["NLP", "Healthcare", "Conversational AI"],
-    sourceUrl: "https://github.com/shubhanghere/Ai-Healthcare-Chatbot-master",
+    url: "https://github.com/shubhanghere/Ai-Healthcare-Chatbot-master",
   },
   {
     number: "04", title: "NewsFeedHarmony", type: "News Feed Intelligence",
     description: "RSS news workflow that organizes articles with sentiment and keyword analysis for easier discovery.",
     tags: ["Python", "RSS", "Sentiment Analysis"],
-    sourceUrl: "https://github.com/shubhanghere/NewsFeedHarmony",
+    url: "https://github.com/shubhanghere/NewsFeedHarmony",
   },
   {
     number: "05", title: "Smart City Traffic AI", type: "SMART CITY / AI TRAFFIC INTELLIGENCE",
     description: "An interactive smart-city traffic intelligence platform featuring a 3D digital twin, congestion monitoring, scenario-based traffic forecasting, incident simulation, adaptive signal strategies, and interactive analytics.",
     tags: ["React", "Three.js", "JavaScript", "Vite", "Traffic Simulation"],
-    sourceUrl: "https://github.com/shubhanghere/smart-city-traffic-ai-ml-prediction",
-    demoUrl: "https://smart-city-traffic-ai-ml-prediction.pages.dev/",
+    url: "https://smart-city-traffic-ai-ml-prediction.pages.dev/",
   },
 ];
 const experiences = [
@@ -88,36 +87,6 @@ const skills = [
 ];
 export default function Portfolio() {
   const [connectOpen, setConnectOpen] = useState(false);
-  const [projectLinksOpen, setProjectLinksOpen] = useState(false);
-  const [projectLinksPinned, setProjectLinksPinned] = useState(false);
-  const projectLinksRef = useRef<HTMLDivElement>(null);
-  const projectLinksTriggerRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (!projectLinksOpen) return;
-
-    const closeOnOutsidePress = (event: PointerEvent) => {
-      if (event.target instanceof Node && !projectLinksRef.current?.contains(event.target)) {
-        setProjectLinksOpen(false);
-        setProjectLinksPinned(false);
-      }
-    };
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setProjectLinksOpen(false);
-        setProjectLinksPinned(false);
-        projectLinksTriggerRef.current?.focus();
-      }
-    };
-
-    document.addEventListener("pointerdown", closeOnOutsidePress);
-    document.addEventListener("keydown", closeOnEscape);
-    return () => {
-      document.removeEventListener("pointerdown", closeOnOutsidePress);
-      document.removeEventListener("keydown", closeOnEscape);
-    };
-  }, [projectLinksOpen]);
-
   return (
     <>
       <main className="portfolio-shell">
@@ -319,81 +288,18 @@ export default function Portfolio() {
 
           <div className="projects-grid">
             {projects.map((project) => (
-              <article
-                className={`project-card${project.demoUrl && projectLinksOpen ? " is-project-links-open" : ""}`}
+              <a
+                className="project-card"
                 key={project.number}
-                onPointerEnter={(event) => {
-                  if (project.demoUrl && event.pointerType === "mouse") {
-                    setProjectLinksOpen(true);
-                    setProjectLinksPinned(false);
-                  }
-                }}
-                onPointerLeave={(event) => {
-                  if (project.demoUrl && event.pointerType === "mouse" && !projectLinksPinned && !projectLinksRef.current?.contains(document.activeElement)) {
-                    setProjectLinksOpen(false);
-                  }
-                }}
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <div className="project-top">
                   <span>{project.number}</span>
-                  {project.demoUrl ? (
-                    <div
-                      className="project-link-menu"
-                      ref={projectLinksRef}
-                      onBlurCapture={(event) => {
-                        if (!(event.relatedTarget instanceof Node) || !projectLinksRef.current?.contains(event.relatedTarget)) {
-                          setProjectLinksOpen(false);
-                          setProjectLinksPinned(false);
-                        }
-                      }}
-                    >
-                      <button
-                        className="project-nav-link"
-                        type="button"
-                        ref={projectLinksTriggerRef}
-                        aria-label={`Show project links for ${project.title}`}
-                        aria-expanded={projectLinksOpen}
-                        aria-controls={`project-links-${project.number}`}
-                        onClick={() => {
-                          const nextOpen = !projectLinksOpen || !projectLinksPinned;
-                          setProjectLinksOpen(nextOpen);
-                          setProjectLinksPinned(nextOpen);
-                        }}
-                      >
-                        <Link2 aria-hidden="true" size={17} />
-                      </button>
-                      <div
-                        className={`project-link-popover${projectLinksOpen ? " is-open" : ""}`}
-                        id={`project-links-${project.number}`}
-                        role="group"
-                        aria-labelledby={`project-links-heading-${project.number}`}
-                        aria-hidden={!projectLinksOpen}
-                        inert={!projectLinksOpen}
-                      >
-                        <strong id={`project-links-heading-${project.number}`}>Explore Project</strong>
-                        <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer" onClick={() => setProjectLinksOpen(false)}>
-                          <SiGithub aria-hidden="true" size={16} />
-                          <span>Source Code</span>
-                          <ExternalLink aria-hidden="true" size={13} />
-                        </a>
-                        <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" onClick={() => setProjectLinksOpen(false)}>
-                          <Radio aria-hidden="true" size={15} className="live-icon" />
-                          <span>Live Demo</span>
-                          <ExternalLink aria-hidden="true" size={13} />
-                        </a>
-                      </div>
-                    </div>
-                  ) : (
-                    <a
-                      className="project-nav-link"
-                      href={project.sourceUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Open ${project.title} source code`}
-                    >
-                      <Link2 aria-hidden="true" size={17} />
-                    </a>
-                  )}
+                  <span className="project-external-icon" aria-hidden="true">
+                    <ExternalLink size={17} />
+                  </span>
                 </div>
 
                 <div className="project-type">
@@ -409,12 +315,7 @@ export default function Portfolio() {
                     <span key={tag}>{tag}</span>
                   ))}
                 </div>
-                {!project.demoUrl && project.sourceUrl && (
-                  <div className="project-actions">
-                    <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer"><SiGithub aria-hidden="true" size={15} />Source Code<ExternalLink aria-hidden="true" size={13} /></a>
-                  </div>
-                )}
-              </article>
+              </a>
             ))}
           </div>
         </section>
