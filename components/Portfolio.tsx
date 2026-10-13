@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import AIOrb from "./AIOrb";
 import AIRobotOrbit from "./AIRobotOrbit";
 import ConnectModal from "./ConnectModal";
-import { ArrowUpRight, ExternalLink, Mail, Radio } from "lucide-react";
+import { ExternalLink, Link2, Mail, Radio } from "lucide-react";
 import { SiGithub, SiMedium, SiGooglescholar } from "react-icons/si";
 import { FaLinkedinIn } from "react-icons/fa6";
 
@@ -319,24 +319,27 @@ export default function Portfolio() {
 
           <div className="projects-grid">
             {projects.map((project) => (
-              <article className={`project-card${project.demoUrl && projectLinksOpen ? " is-project-links-open" : ""}`} key={project.number}>
+              <article
+                className={`project-card${project.demoUrl && projectLinksOpen ? " is-project-links-open" : ""}`}
+                key={project.number}
+                onPointerEnter={(event) => {
+                  if (project.demoUrl && event.pointerType === "mouse") {
+                    setProjectLinksOpen(true);
+                    setProjectLinksPinned(false);
+                  }
+                }}
+                onPointerLeave={(event) => {
+                  if (project.demoUrl && event.pointerType === "mouse" && !projectLinksPinned && !projectLinksRef.current?.contains(document.activeElement)) {
+                    setProjectLinksOpen(false);
+                  }
+                }}
+              >
                 <div className="project-top">
                   <span>{project.number}</span>
                   {project.demoUrl ? (
                     <div
                       className="project-link-menu"
                       ref={projectLinksRef}
-                      onPointerEnter={(event) => {
-                        if (event.pointerType === "mouse") {
-                          setProjectLinksOpen(true);
-                          setProjectLinksPinned(false);
-                        }
-                      }}
-                      onPointerLeave={(event) => {
-                        if (event.pointerType === "mouse" && !projectLinksPinned && !projectLinksRef.current?.contains(document.activeElement)) {
-                          setProjectLinksOpen(false);
-                        }
-                      }}
                       onBlurCapture={(event) => {
                         if (!(event.relatedTarget instanceof Node) || !projectLinksRef.current?.contains(event.relatedTarget)) {
                           setProjectLinksOpen(false);
@@ -357,7 +360,7 @@ export default function Portfolio() {
                           setProjectLinksPinned(nextOpen);
                         }}
                       >
-                        <ArrowUpRight aria-hidden="true" size={17} />
+                        <Link2 aria-hidden="true" size={17} />
                       </button>
                       <div
                         className={`project-link-popover${projectLinksOpen ? " is-open" : ""}`}
@@ -375,7 +378,7 @@ export default function Portfolio() {
                         </a>
                         <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" onClick={() => setProjectLinksOpen(false)}>
                           <Radio aria-hidden="true" size={15} className="live-icon" />
-                          <span>Live Project</span>
+                          <span>Live Demo</span>
                           <ExternalLink aria-hidden="true" size={13} />
                         </a>
                       </div>
@@ -388,7 +391,7 @@ export default function Portfolio() {
                       rel="noopener noreferrer"
                       aria-label={`Open ${project.title} source code`}
                     >
-                      <ArrowUpRight aria-hidden="true" size={17} />
+                      <Link2 aria-hidden="true" size={17} />
                     </a>
                   )}
                 </div>
